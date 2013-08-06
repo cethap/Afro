@@ -32,12 +32,17 @@
 	class Afro {
 		public static $foundRoute = FALSE;
 
+		// Routing Data
 		public $URI        = '';
 		public $params     = array();
 		public $method     = '';
 		public $format     = '';
 		public $paramCount = 0;
 		public $payload    = array();
+
+		// Request Data
+		public $headers = array();
+		public $ip      = '';
 
 		public static function getInstance() {
 			static $instance = NULL;
@@ -72,11 +77,16 @@
 
 		public function __construct() {
 			ob_start();
+			// Routing Data
 			$this->URI        = $this->getURI();
 			$this->params     = explode('/', trim($this->URI, '/'));
 			$this->paramCount = count($this->params);
 			$this->method     = $this->getMethod();
 			$this->payload    = $GLOBALS['_' . $this->method];
+
+			// Request Data
+			$this->headers = getallheaders();
+			$this->ip      = $_SERVER['REMOTE_ADDR'];
 		}
 
 		public function param($num) {

@@ -6,8 +6,8 @@
 		echo "Hello! From test.php";
 	});
 
-	get('/named/(.*)', function($Afro) {
-		// echo "<pre>".print_r($Afro, TRUE)."</pre>";
+	get('/request', function($Afro) {
+		echo "<pre>".print_r($Afro, TRUE)."</pre>";
 	});
 
 	get('/countries(.*?)', function($Afro) {
