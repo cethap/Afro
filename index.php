@@ -11,33 +11,41 @@
 	});
 
 	get('/countries(.*?)', function($Afro) {
-		$testData = array();
-		$Afro->format('json', function() use (&$testData) {
-			$testData = array(
-				"mx" => array(
-					'iso' => 'MX',
-					'fullName' => 'Mexico'
-				),
-				"jm" => array(
-					'iso' => 'JM',
-					'fullName' => 'Jamaica'
-				)
-			);
-		});
+		$testData = array(
+			"mx" => array(
+				'iso' => 'MX',
+				'fullName' => 'Mexico'
+			),
+			"jm" => array(
+				'iso' => 'JM',
+				'fullName' => 'Jamaica'
+			)
+		);
 
-		$lookingFor = strtolower(basename($Afro->params[1], '.json'));
-		if(isset($testData[$lookingFor])) {
-			// return json_encode($testData[$lookingFor]);
-			echo json_encode($testData[$lookingFor]);
+		if($Afro->format) {
+			$Afro->format('json', function($Afro) use ($testData) {
+				$lookingFor = strtolower(basename($Afro->params[1], '.json'));
+				if(isset($testData[$lookingFor])) {
+					echo json_encode($testData[$lookingFor]);
+				}else{
+					echo json_encode($testData);
+				}
+			});
+
+			$Afro->format('csv', function($Afro) use ($testData) {
+				$hFile = fopen("php://output", "w");
+				fputcsv($hFile, array('ISO', 'Country'));
+
+				$lookingFor = $Afro->param(2);
+				if(isset($testData[$lookingFor])) {
+					fputcsv($hFile, $testData[$lookingFor]);
+				}
+				fclose($hFile);
+			});
 		}else{
-			echo json_encode($testData);
+			echo "Countries are only available as a JSON format.";
 		}
 
-		$Afro->format('csv', function() {
-			return "iso,fullName\nMX,Mexico\n,JM,Jamaica";
-		});
-
-		if(!$Afro->format) echo "Countries are only available as a JSON format.";
 	});
 
 	get('/hello/(.*?)', function($Afro) {

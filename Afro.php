@@ -39,6 +39,7 @@
 		public $format     = '';
 		public $paramCount = 0;
 		public $payload    = array();
+		public $route      = '';
 
 		// Request Data
 		public $headers = array();
@@ -61,15 +62,13 @@
 		public static function process($route, $callback, $type) {
 			$Afro = static::getInstance();
 
+			$Afro->route = $route;
+
 			if($type === AJAX)
 				$Afro->method = isset($_SERVER['HTTP_X_REQUESTED_WITH']) ? $_SERVER['HTTP_X_REQUESTED_WITH'] : 'GET';
 
 			if(static::$foundRoute || (!preg_match('@^'.$route.'(?:\.(\w+))?$@uD', $Afro->URI, $matches) || $Afro->method != $type))
 				return FALSE;
-
-			$lastExt = $matches[count($matches) - 1];
-
-			$Afro->format = pathinfo($lastExt, PATHINFO_EXTENSION);
 
 			static::$foundRoute = TRUE;
 			return $callback($Afro);
@@ -128,15 +127,20 @@
 				return FALSE;
 			}
 
-			return ($prefixSlash ? '/' : '') . str_replace(array('//', '../'), '/', trim($uri, '/'));
+			$URIString = ($prefixSlash ? '/' : '') . str_replace(array('//', '../'), '/', trim($uri, '/'));
+			$this->format = pathinfo($URIString, PATHINFO_EXTENSION);
+
+			return str_replace('.' . $this->format, '', $URIString);
 		}
 
 		public function format($name, $callback) {
 			$Afro = static::getInstance();
 
-			if(!empty($Afro->format) && $name == $Afro->format)
-				return $callback($Afro);
-			else return FALSE;
+			if(!empty($Afro->format) && $name == $Afro->format) {
+				return call_user_func($callback, $Afro);
+			} else {
+				return FALSE;
+			} 
 		}
 
 		public function response($data, $for = NULL, $echo = TRUE) {
