@@ -60,7 +60,7 @@ Afro is also aware of requests which aren't handled by one of the five *router* 
 
 This can be accessed with `$Afro->payload` just in case you need it.
 
-# Exposing Afro
+# Under the hood
 You can expose any part of Afro by taking a look at the instance created by the class on the `$Afro` variable. Calling `var_dump($Afro->getInstance())` will display the current pages requested data along with several other useful elements.
 
 - `URI` the entire URI being requested.
@@ -69,12 +69,6 @@ You can expose any part of Afro by taking a look at the instance created by the 
 - `format` if a format such as `.json` or `.csv` is appended to the end of the URI this will be populated.
 - `paramCount` the amount of parameters being requested in the `params` array above.
 - `payload` as explained in the section above.
-
-# Author
-- Blog: [james.brooks.so](http://james.brooks.so)
-- Twitter: [@jbrooksuk](http://twitter.com/jbrooksuk)
-- App.net: [@jbrooksuk](http://alpha.app.net/jbrooksuk)
-- GitHub: [@jbrooksuk](http://github.com/jbrooksuk)
 
 # License
 MIT - [http://jbrooksuk.mit-license.org](http://jbrooksuk.mit-license.org)
