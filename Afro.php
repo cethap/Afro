@@ -32,12 +32,12 @@
 	class Afro {
 		public static $foundRoute = FALSE;
 
-		public $URI = '';
-		public $params = array();
-		public $method = '';
-		public $format = '';
+		public $URI        = '';
+		public $params     = array();
+		public $method     = '';
+		public $format     = '';
 		public $paramCount = 0;
-		public $payload = array();
+		public $payload    = array();
 
 		public static function getInstance() {
 			static $instance = NULL;
@@ -72,11 +72,11 @@
 
 		public function __construct() {
 			ob_start();
-			$this->URI = $this->getURI();
-			$this->params = explode('/', trim($this->URI, '/'));
+			$this->URI        = $this->getURI();
+			$this->params     = explode('/', trim($this->URI, '/'));
 			$this->paramCount = count($this->params);
-			$this->method = $this->getMethod();
-			$this->payload = $GLOBALS['_' . $this->method];
+			$this->method     = $this->getMethod();
+			$this->payload    = $GLOBALS['_' . $this->method];
 		}
 
 		public function param($num) {
@@ -104,14 +104,14 @@
 				if(strncmp($uri, '?/', 2) === 0) $uri = substr($uri, 2);
 
 				$parts = preg_split('#\?#i', $uri, 2);
-				$uri = $parts[0];
+				$uri   = $parts[0];
 
 				if(isset($parts[1])) {
 					$_SERVER['QUERY_STRING'] = $parts[1];
 					parse_str($_SERVER['QUERY_STRING'], $_GET);
 				}else {
 					$_SERVER['QUERY_STRING'] = '';
-					$_GET = array();
+					$_GET                    = array();
 				}
 				$uri = parse_url($uri, PHP_URL_PATH);
 			}else {
