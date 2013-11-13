@@ -34,9 +34,9 @@
 
 		// Routing Data
 		public $URI        = '';
-		public $params     = array();
-		public $method     = '';
-		public $format     = '';
+		public $aParams    = array();
+		public $sMethod    = '';
+		public $sFormat    = '';
 		public $paramCount = 0;
 		public $payload    = array();
 		public $route      = '';
@@ -47,7 +47,9 @@
 
 		public static function getInstance() {
 			static $instance = NULL;
-			if($instance === NULL) $instance = new Afro;
+			if($instance === NULL) {
+				$instance = new Afro;
+			}
 			return $instance;
 		}
 
@@ -64,11 +66,13 @@
 
 			$Afro->route = $route;
 
-			if($type === AJAX)
-				$Afro->method = isset($_SERVER['HTTP_X_REQUESTED_WITH']) ? $_SERVER['HTTP_X_REQUESTED_WITH'] : 'GET';
+			if($type === AJAX) {
+				$Afro->sMethod = isset($_SERVER['HTTP_X_REQUESTED_WITH']) ? $_SERVER['HTTP_X_REQUESTED_WITH'] : 'GET';
+			}
 
-			if(static::$foundRoute || (!preg_match('@^'.$route.'(?:\.(\w+))?$@uD', $Afro->URI, $matches) || $Afro->method != $type))
+			if(static::$foundRoute || (!preg_match('@^'.$route.'(?:\.(\w+))?$@uD', $Afro->URI, $matches) || $Afro->sMethod != $type)) {
 				return FALSE;
+			}
 
 			static::$foundRoute = TRUE;
 			return $callback($Afro);
@@ -78,10 +82,10 @@
 			ob_start();
 			// Routing Data
 			$this->URI        = $this->getURI();
-			$this->params     = explode('/', trim($this->URI, '/'));
-			$this->paramCount = count($this->params);
-			$this->method     = $this->getMethod();
-			$this->payload    = $GLOBALS['_' . $this->method];
+			$this->aParams     = explode('/', trim($this->URI, '/'));
+			$this->paramCount = count($this->aParams);
+			$this->sMethod     = $this->getMethod();
+			$this->payload    = $GLOBALS['_' . $this->sMethod];
 
 			// Request Data
 			$this->headers = getallheaders();
@@ -90,8 +94,8 @@
 
 		public function param($num) {
 			$num--;
-			$this->params[$num] = isset($this->params[$num]) ? basename($this->params[$num], '.' . $this->format) : NULL;
-			return isset($this->params[$num]) ? $this->params[$num] : NULL;
+			$this->aParams[$num] = isset($this->aParams[$num]) ? basename($this->aParams[$num], '.' . $this->sFormat) : NULL;
+			return isset($this->aParams[$num]) ? $this->aParams[$num] : NULL;
 		}
 
 		protected function getMethod() {
@@ -128,15 +132,15 @@
 			}
 
 			$URIString = ($prefixSlash ? '/' : '') . str_replace(array('//', '../'), '/', trim($uri, '/'));
-			$this->format = pathinfo($URIString, PATHINFO_EXTENSION);
+			$this->sFormat = pathinfo($URIString, PATHINFO_EXTENSION);
 
-			return str_replace('.' . $this->format, '', $URIString);
+			return str_replace('.' . $this->sFormat, '', $URIString);
 		}
 
 		public function format($name, $callback) {
 			$Afro = static::getInstance();
 
-			if(!empty($Afro->format) && $name == $Afro->format) {
+			if(!empty($Afro->sFormat) && $name == $Afro->sFormat) {
 				return call_user_func($callback, $Afro);
 			} else {
 				return FALSE;
@@ -145,7 +149,7 @@
 
 		public function response($data, $for = NULL, $echo = TRUE) {
 			$Afro = static::getInstance();
-			if (is_null($for) && !empty($Afro->format)) $for = $Afro->format;
+			if (is_null($for) && !empty($Afro->sFormat)) $for = $Afro->sFormat;
 			$for = strtolower($for);
 			switch ($for) {
 				case 'json':
