@@ -15,17 +15,21 @@ All of them take the same parameters but will only activate on the given request
 ## Handling a simple `GET` request with no parameters.
 
 ```php
-get('/', function($Afro) {
-    echo "HELLO";
-});
+<?
+	get('/', function($Afro) {
+		echo "HELLO";
+	});
+?>
 ```
 
 ## Handling a `GET` request for getting a users name.
 
 ```php
-get('/hello/(.*?)', function($Afro) {
-	echo 'Hello ' . $Afro->param(2) . ', I hope today is full of Unicorns.'
-});
+<?
+	get('/hello/(.*?)', function($Afro) {
+		echo 'Hello ' . $Afro->param(2) . ', I hope today is full of Unicorns.'
+	});
+?>
 ```
 
 ## Handling a `GET` request for getting a users name in different formats.
@@ -34,14 +38,16 @@ One of the beautiful things about Afro is that you can use the same request hand
 Let's take the example above and use add a JSON output.
 
 ```php
-get('/hello/(.*?)', function($Afro) {
-	$Afro->format('json', function($Afro) {
-        echo json_encode(array('name', $Afro->param(2)));
-    });
+<?
+	get('/hello/(.*?)', function($Afro) {
+		$Afro->format('json', function($Afro) {
+			echo json_encode(array('name', $Afro->param(2)));
+		});
 
-    if(!$Afro->format)
-		echo 'Hello ' . $Afro->param(2) . ', I hope today is full of Unicorns.'
-});
+		if(!$Afro->format)
+			echo 'Hello ' . $Afro->param(2) . ', I hope today is full of Unicorns.'
+	});
+?>
 ```
 
 Now, if the request ends is `http://localhost/afro/hello/jbrooksuk.json` the output will be returned as a valid JSON string.
@@ -49,10 +55,13 @@ Now, if the request ends is `http://localhost/afro/hello/jbrooksuk.json` the out
 ## Handling a simple POST request with a username.
 
 ```php
-post('/connect/(.*?)', function($Afro) {
-    if(!$Afro->format)
-    	// Insert the user into a database? The format will always be the same in whichever function you use.
-});
+<?
+	post('/connect/(.*?)', function($Afro) {
+		if(!$Afro->format) {
+			// Insert the user into a database? The format will always be the same in whichever function you use.
+		}
+	});
+?>
 ```
 
 # Payload
