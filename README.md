@@ -1,5 +1,5 @@
 # Afro
-A PHP class for handling URL requests, similar to Ruby's [Sinatra gem](http://www.sinatrarb.com/).
+Expressive routing framework for PHP.
 
 # Working with Afro
 Afro includes five procedural functions which allow you to handle requests with:
