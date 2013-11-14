@@ -12,6 +12,21 @@ Afro includes five procedural functions which allow you to handle requests with:
 
 All of them take the same parameters but will only activate on the given request types.
 
+## Named parameters
+**NEW!**
+
+Named parameters give you much more flexibility in how you handle data, whilst still giving you the power of regular expressions, plus you're still able to use the `param` function at the same time if you'd like.
+
+```php
+<?
+	get('/blog/(\w+)/(\d+)', function($Afro, $catID, $pageID) {
+		echo "Retrieving from Blog: Category: {$catID} and Page ID: {$pageID}";
+	});
+?>
+```
+
+Here we've been able to retrieve what we'd expect to be the category and page id. It's important to note that the `blog` chunk of the route is **not** returned as a parameter, as you should already know what route is being handled. If this is something you'd need, then you'd want to replace blog with `(\w+)` and then add a parameter to the callback of `$route` or whatever, then a condition to handle the value returned.
+
 ## Handling a simple `GET` request with no parameters.
 
 ```php
