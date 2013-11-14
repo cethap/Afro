@@ -1,10 +1,11 @@
 <?php 
 
 	/**
-	 * Afro - The simplistic PHP port of Sinatra for Ruby.
+	 * Afro - Expressive routing framework for PHP.
 	 * 
-	 * @author  James <ukjbrooks@gmail.com>
-	 * @version 1.2
+	 * @author  James Brooks <jbrooksuk@me.com>
+	 * @license MIT - http://jbrooksuk.mit-license.org
+	 * @version 1.3.0
 	 */
 
 	define('AJAX', 'XMLHttpRequest');
