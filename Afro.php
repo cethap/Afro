@@ -34,9 +34,9 @@
 
 		// Routing Data
 		public $URI        = '';
-		public $aParams    = array();
+		public $params     = array();
 		public $sMethod    = '';
-		public $sFormat    = '';
+		public $format     = '';
 		public $paramCount = 0;
 		public $payload    = array();
 		public $route      = '';
@@ -75,16 +75,26 @@
 			}
 
 			static::$foundRoute = TRUE;
-			return $callback($Afro);
+
+			// Clean and store the route
+			$route = '/^' . str_replace('/', '\/', $route) . '$/';
+			if(preg_match($route, $Afro->URI, $params)) {
+				$routeParams = [$Afro];
+				$routeParams = $routeParams + $params;
+				return call_user_func_array($callback, $routeParams);
+			}else{
+				return $callback($Afro);
+			}
 		}
 
 		public function __construct() {
 			ob_start();
 			// Routing Data
 			$this->URI        = $this->getURI();
-			$this->aParams     = explode('/', trim($this->URI, '/'));
-			$this->paramCount = count($this->aParams);
-			$this->sMethod     = $this->getMethod();
+			$this->params     = explode('/', trim($this->URI, '/'));
+			$this->params     = array_slice($this->params, -1, 1);
+			$this->paramCount = count($this->params);
+			$this->sMethod    = $this->getMethod();
 			$this->payload    = $GLOBALS['_' . $this->sMethod];
 
 			// Request Data
@@ -94,8 +104,8 @@
 
 		public function param($num) {
 			$num--;
-			$this->aParams[$num] = isset($this->aParams[$num]) ? basename($this->aParams[$num], '.' . $this->sFormat) : NULL;
-			return isset($this->aParams[$num]) ? $this->aParams[$num] : NULL;
+			$this->params[$num] = isset($this->params[$num]) ? basename($this->params[$num], '.' . $this->format) : NULL;
+			return isset($this->params[$num]) ? $this->params[$num] : NULL;
 		}
 
 		protected function getMethod() {
@@ -132,15 +142,15 @@
 			}
 
 			$URIString = ($prefixSlash ? '/' : '') . str_replace(array('//', '../'), '/', trim($uri, '/'));
-			$this->sFormat = pathinfo($URIString, PATHINFO_EXTENSION);
+			$this->format = pathinfo($URIString, PATHINFO_EXTENSION);
 
-			return str_replace('.' . $this->sFormat, '', $URIString);
+			return str_replace('.' . $this->format, '', $URIString);
 		}
 
 		public function format($name, $callback) {
 			$Afro = static::getInstance();
 
-			if(!empty($Afro->sFormat) && $name == $Afro->sFormat) {
+			if(!empty($Afro->format) && $name == $Afro->format) {
 				return call_user_func($callback, $Afro);
 			} else {
 				return FALSE;
@@ -149,7 +159,7 @@
 
 		public function response($data, $for = NULL, $echo = TRUE) {
 			$Afro = static::getInstance();
-			if (is_null($for) && !empty($Afro->sFormat)) $for = $Afro->sFormat;
+			if (is_null($for) && !empty($Afro->format)) $for = $Afro->format;
 			$for = strtolower($for);
 			switch ($for) {
 				case 'json':

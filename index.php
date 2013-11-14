@@ -10,7 +10,11 @@
 		echo "<pre>".print_r($Afro, TRUE)."</pre>";
 	});
 
-	get('/countries(.*?)', function($Afro) {
+	get('/blog/(\w+)/(\d+)', function($Afro, $catID, $pageID) {
+		echo "Retrieving from blog: Category: {$catID} and Page ID: {$pageID}";
+	});
+
+	get('/countries/(.*?)', function($Afro) {
 		$testData = array(
 			"mx" => array(
 				'iso' => 'MX',
@@ -24,7 +28,7 @@
 
 		if($Afro->format) {
 			$Afro->format('json', function($Afro) use ($testData) {
-				$lookingFor = strtolower(basename($Afro->params[1], '.json'));
+				$lookingFor = strtolower(basename($Afro->params[0], '.json'));
 				if(isset($testData[$lookingFor])) {
 					echo json_encode($testData[$lookingFor]);
 				}else{
@@ -48,13 +52,14 @@
 
 	});
 
-	get('/hello/(.*?)', function($Afro) {
-		$Afro->format('json', function($Afro) {
-			echo json_encode(array('name', $Afro->param(2)));
+	get('/hello/(\w+)', function($Afro, $userName) {
+		$Afro->format('json', function($Afro) use ($userName) {
+			echo json_encode(array('name', $userName));
 		});
 
-		if(!$Afro->format)
-			echo 'Hello '. $Afro->param(2) . ', it\'s a good day today!';
+		if(!$Afro->format) {
+			echo 'Hello '. $userName . ', it\'s a good day today!';
+		}
 	});
 
 ?>
