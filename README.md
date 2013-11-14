@@ -33,6 +33,7 @@ All of them take the same parameters but will only activate on the given request
 ```
 
 ## Handling a `GET` request for getting a users name in different formats.
+
 One of the beautiful things about Afro is that you can use the same request handler, but output different data depending on the format the request is called as.
 
 Let's take the example above and use add a JSON output.
@@ -53,6 +54,7 @@ Let's take the example above and use add a JSON output.
 Now, if the request ends is `http://localhost/afro/hello/jbrooksuk.json` the output will be returned as a valid JSON string.
 
 ## Handling a simple POST request with a username.
+
 POST requests are just handled with the `post` function.
 
 ```php
