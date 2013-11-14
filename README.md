@@ -27,7 +27,7 @@ All of them take the same parameters but will only activate on the given request
 ```php
 <?
 	get('/hello/(.*?)', function($Afro) {
-		echo 'Hello ' . $Afro->param(2) . ', I hope today is full of Unicorns.'
+		echo 'Hello ' . $Afro->param(1) . ', I hope today is full of Unicorns.'
 	});
 ?>
 ```
@@ -42,11 +42,11 @@ Let's take the example above and use add a JSON output.
 <?
 	get('/hello/(.*?)', function($Afro) {
 		$Afro->format('json', function($Afro) {
-			echo json_encode(array('name', $Afro->param(2)));
+			echo json_encode(array('name', $Afro->param(1)));
 		});
 
 		if(!$Afro->format)
-			echo 'Hello ' . $Afro->param(2) . ', I hope today is full of Unicorns.'
+			echo 'Hello ' . $Afro->param(1) . ', I hope today is full of Unicorns.'
 	});
 ?>
 ```
