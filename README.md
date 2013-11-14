@@ -53,7 +53,7 @@ Let's take the example above and use add a JSON output.
 
 Now, if the request ends is `http://localhost/afro/hello/jbrooksuk.json` the output will be returned as a valid JSON string.
 
-## Handling a simple POST request with a username.
+## Handling a simple `POST` request with a username.
 
 POST requests are just handled with the `post` function.
 
