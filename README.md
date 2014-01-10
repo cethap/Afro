@@ -1,4 +1,4 @@
-# Afro
+# Afro [![Gittip](http://badgr.co/gittip/jbrooksuk.png)](https://www.gittip.com/jbrooksuk/)
 Expressive routing framework for PHP.
 
 # Working with Afro
